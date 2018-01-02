@@ -16,13 +16,15 @@ $SCCMSiteCode = Get-WmiObject -Namespace "root\SMS" -Class SMS_ProviderLocation 
 $IPAddresses = Get-WmiObject -Namespace "root\SMS\site_$($SCCMSiteCode)" -Class SMS_R_System -ComputerName $SiteServer -Filter "ResourceID like '$ResourceID'" | Select-Object -ExpandProperty IPAddresses
 }
 
+$IP = $IPAddresses[0]
 catch [Exception] {
 $Popup.Popup("Cannot connect to the ConfigMgr-Site: Error-Message: $_.Exception.Message",0,"Error",0)
 Break
 }
 
-try {
-Start-Process -FilePath "$env:ProgramFiles\TightVNC\vncviewer.exe" -ArgumentList "$IPAddresses[0]"
+try
+{
+	Start-Process -FilePath "C:\Program Files\TightVNC\tvnviewer.exe" -ArgumentList "-host=$IP"
 }
 
 catch [Exception] {
